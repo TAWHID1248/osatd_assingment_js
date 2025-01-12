@@ -130,3 +130,47 @@ function removeProductBtn(){
   }
 
 }
+
+// Add Promo Code Feature
+const promoCodes = {
+  "ostad10": 0.10, // 10% discount
+  "ostad5": 0.05   // 5% discount
+};
+
+// Function to apply promo code
+document.getElementById("applyPromoCodeBtn").addEventListener("click", () => {
+  const promoCodeInput = document.getElementById("promoCodeInput").value.trim();
+  const subtotal = getInputValue("price");
+  const discountMessage = document.getElementById("promoCodeMessage");
+
+  if (promoCodes[promoCodeInput]) {
+    const discountRate = promoCodes[promoCodeInput];
+    const discount = subtotal * discountRate;
+
+    setInnerText("discount", discount);
+    const finalTotal = subtotal - discount;
+    setInnerText("finalTotal", finalTotal);
+
+    discountMessage.textContent = "Promo code applied successfully!";
+    discountMessage.classList.remove("text-danger");
+    discountMessage.classList.add("text-success");
+  } else {
+    discountMessage.textContent = "Invalid promo code. Please try again.";
+    discountMessage.classList.remove("text-success");
+    discountMessage.classList.add("text-danger");
+  }
+});
+
+
+
+// Update Grand Total with Promo Code
+const updateTotals = () => {
+  const subtotal = getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
+  const discount = getInputValue("discount");
+  const finalTotal = subtotal - discount;
+
+  setInnerText("subtotal", subtotal);
+  setInnerText("finalTotal", finalTotal.toFixed(2));
+};
+
+
